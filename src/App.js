@@ -20,12 +20,7 @@ class BooksApp extends Component {
     return (
       <div className="app">
         {this.state.showSearchPage ? (
-          <div className="search-books">
-            <SearchBar goBack={this.back} />
-            <div className="search-books-results">
-              <ol className="books-grid"></ol>
-            </div>
-          </div>
+          <SearchPage goBack={this.back} />
         ) : (
             <div className="list-books">
               <Header title="MyReads" />
@@ -126,6 +121,19 @@ class SearchBar extends Component {
                 */}
           <input type="text" placeholder="Search by title or author" />
 
+        </div>
+      </div>
+    )
+  }
+}
+
+class SearchPage extends Component {
+  render() {
+    return (
+      <div className="search-books">
+        <SearchBar goBack={this.props.goBack} />
+        <div className="search-books-results">
+          <BooksGrid />
         </div>
       </div>
     )
