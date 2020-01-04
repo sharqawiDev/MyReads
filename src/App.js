@@ -1,16 +1,17 @@
 import React, { Component } from 'react'
-// import * as BooksAPI from './BooksAPI'
+import * as BooksAPI from './BooksAPI'
 import './App.css'
 
 class BooksApp extends Component {
   state = {
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
+    books: [],
     showSearchPage: false
+  }
+
+  componentDidMount() {
+    BooksAPI.getAll().then(books => {
+      this.setState({ books })
+    })
   }
 
   back = () => this.setState({ showSearchPage: false })
@@ -24,7 +25,7 @@ class BooksApp extends Component {
         ) : (
             <div className="list-books">
               <Header title="MyReads" />
-              <Shelves />
+              <Shelves books={this.state.books} />
               <div className="open-search">
                 <button onClick={() => this.setState({ showSearchPage: true })}>Add a book</button>
               </div>
@@ -45,12 +46,15 @@ class Header extends Component {
 }
 class Shelves extends Component {
   render() {
+    const cr = this.props.books.filter(book => book.shelf === "currentlyReading")
+    const wtr = this.props.books.filter(book => book.shelf === "wantToRead")
+    const r = this.props.books.filter(book => book.shelf === "read")
     return (
       <div className="list-books-content">
         <div>
-          <BookShelf title="Currently Reading" />
-          <BookShelf title="Want to Read" />
-          <BookShelf title="Read" />
+          <BookShelf title="Currently Reading" books={cr} />
+          <BookShelf title="Want to Read" books={wtr} />
+          <BookShelf title="Read" books={r} />
         </div>
       </div>
     )
@@ -62,7 +66,7 @@ class BookShelf extends Component {
       <div className="bookshelf">
         <h2 className="bookshelf-title">{this.props.title}</h2>
         <div className="bookshelf-books">
-          <BooksGrid />
+          <BooksGrid books={this.props.books} />
         </div>
       </div>
     )
@@ -72,12 +76,7 @@ class BooksGrid extends Component {
   render() {
     return (
       <ol className="books-grid">
-        <li>
-          <Book />
-        </li>
-        <li>
-          <Book />
-        </li>
+        {this.props.books.map(book => <Book book={book} />)}
       </ol>
     )
   }
@@ -85,12 +84,13 @@ class BooksGrid extends Component {
 }
 class Book extends Component {
   render() {
+    const { book } = this.props;
     return (
       <div className="book">
         <div className="book-top">
-          <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url("http://books.google.com/books/content?id=PGR2AwAAQBAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE73-GnPVEyb7MOCxDzOYF1PTQRuf6nCss9LMNOSWBpxBrz8Pm2_mFtWMMg_Y1dx92HT7cUoQBeSWjs3oEztBVhUeDFQX6-tWlWz1-feexS0mlJPjotcwFqAg6hBYDXuK_bkyHD-y&source=gbs_api")' }}></div>
+          <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book["imageLinks"]["thumbnail"]})` }}></div>
           <div className="book-shelf-changer">
-            <select>
+            <select defaultValue={book.shelf}>
               <option value="move" disabled>Move to...</option>
               <option value="currentlyReading">Currently Reading</option>
               <option value="wantToRead">Want to Read</option>
@@ -99,8 +99,8 @@ class Book extends Component {
             </select>
           </div>
         </div>
-        <div className="book-title">To Kill a Mockingbird</div>
-        <div className="book-authors">Harper Lee</div>
+        <div className="book-title">{book.title}</div>
+        {book.authors.map(author => <div className="book-authors">{author}</div>)}
       </div>
     )
   }
