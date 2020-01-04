@@ -39,9 +39,7 @@ class BooksApp extends Component {
           </div>
         ) : (
             <div className="list-books">
-              <div className="list-books-title">
-                <h1>MyReads</h1>
-              </div>
+              <Header title="MyReads" />
               <div className="list-books-content">
                 <div>
                   <div className="bookshelf">
@@ -202,7 +200,15 @@ class BooksApp extends Component {
     )
   }
 }
-class Header extends Component { }
+class Header extends Component {
+  render() {
+    return (
+      <div className="list-books-title">
+        <h1>{this.props.title}</h1>
+      </div>
+    )
+  }
+}
 class Shelves extends Component { }
 class Shelf extends Component { }
 class BooksGrid extends Component { }
