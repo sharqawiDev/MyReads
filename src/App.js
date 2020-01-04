@@ -13,6 +13,11 @@ class BooksApp extends Component {
       this.setState({ books })
     })
   }
+  changeShelf = (book, shelf) => {
+    BooksAPI.update(book, shelf).then(() => {
+      BooksAPI.getAll().then(books => this.setState({ books }))
+    })
+  }
 
   back = () => this.setState({ showSearchPage: false })
 
@@ -25,7 +30,7 @@ class BooksApp extends Component {
         ) : (
             <div className="list-books">
               <Header title="MyReads" />
-              <Shelves books={this.state.books} />
+              <Shelves books={this.state.books} changeShelf={this.changeShelf} />
               <div className="open-search">
                 <button onClick={() => this.setState({ showSearchPage: true })}>Add a book</button>
               </div>
@@ -52,9 +57,9 @@ class Shelves extends Component {
     return (
       <div className="list-books-content">
         <div>
-          <BookShelf title="Currently Reading" books={cr} />
-          <BookShelf title="Want to Read" books={wtr} />
-          <BookShelf title="Read" books={r} />
+          <BookShelf key="cr" title="Currently Reading" books={cr} change={this.props.changeShelf} />
+          <BookShelf key="wtr" title="Want to Read" books={wtr} change={this.props.changeShelf} />
+          <BookShelf key="r" title="Read" books={r} change={this.props.changeShelf} />
         </div>
       </div>
     )
@@ -66,7 +71,7 @@ class BookShelf extends Component {
       <div className="bookshelf">
         <h2 className="bookshelf-title">{this.props.title}</h2>
         <div className="bookshelf-books">
-          <BooksGrid books={this.props.books} />
+          <BooksGrid books={this.props.books} ch={this.props.change} />
         </div>
       </div>
     )
@@ -76,7 +81,7 @@ class BooksGrid extends Component {
   render() {
     return (
       <ol className="books-grid">
-        {this.props.books.map(book => <Book book={book} />)}
+        {this.props.books.map(book => <Book key={book.id} book={book} ch={this.props.ch} />)}
       </ol>
     )
   }
@@ -90,7 +95,10 @@ class Book extends Component {
         <div className="book-top">
           <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book["imageLinks"]["thumbnail"]})` }}></div>
           <div className="book-shelf-changer">
-            <select defaultValue={book.shelf}>
+            <select defaultValue={book.shelf} onChange={(e) => {
+              book.shelf = e.target.value
+              this.props.ch(book, e.target.value)
+            }}>
               <option value="move" disabled>Move to...</option>
               <option value="currentlyReading">Currently Reading</option>
               <option value="wantToRead">Want to Read</option>
@@ -100,7 +108,7 @@ class Book extends Component {
           </div>
         </div>
         <div className="book-title">{book.title}</div>
-        {book.authors.map(author => <div className="book-authors">{author}</div>)}
+        {book.authors.map(author => <div key={author} className="book-authors">{author}</div>)}
       </div>
     )
   }
@@ -133,7 +141,7 @@ class SearchPage extends Component {
       <div className="search-books">
         <SearchBar goBack={this.props.goBack} />
         <div className="search-books-results">
-          <BooksGrid />
+          <BooksGrid books={[]} />
         </div>
       </div>
     )
