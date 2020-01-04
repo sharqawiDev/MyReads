@@ -202,5 +202,11 @@ class BooksApp extends Component {
     )
   }
 }
+class Header extends Component { }
+class Shelves extends Component { }
+class Shelf extends Component { }
+class BooksGrid extends Component { }
+class Book extends Component { }
+class SearchBar extends Component { }
 
 export default BooksApp
