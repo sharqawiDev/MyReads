@@ -1,9 +1,13 @@
 import React from "react"
-
+import { Link } from "react-router-dom"
 export default (props) => {
     return (
         <div className="search-books-bar">
-            <button className="close-search" onClick={props.goBack}>Close</button>
+            <Link
+                to="/"
+                onClick={() => props.updateQuery("")}
+                className="close-search"
+            >Close</Link>
             <div className="search-books-input-wrapper">
                 {/*
                     However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
