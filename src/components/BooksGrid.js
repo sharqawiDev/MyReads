@@ -10,7 +10,7 @@ const BooksGrid = (props) => {
     )
 }
 
-BooksGrid.PropTypes = {
+BooksGrid.propTypes = {
     books: PropTypes.array.isRequired,
     changeShelf: PropTypes.func.isRequired
 }

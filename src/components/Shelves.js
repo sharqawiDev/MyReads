@@ -17,7 +17,7 @@ const Shelves = (props) => {
     )
 }
 
-Shelves.PropTypes = {
+Shelves.propTypes = {
     books: PropTypes.array.isRequired,
     changeShelf: PropTypes.func.isRequired
 }

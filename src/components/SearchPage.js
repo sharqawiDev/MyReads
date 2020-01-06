@@ -8,7 +8,7 @@ export default class SearchPage extends Component {
         books: [],
         query: ""
     }
-    static PropTypes = {
+    static propTypes = {
         changeShelf: PropTypes.func.isRequired,
         books: PropTypes.array.isRequired
     }

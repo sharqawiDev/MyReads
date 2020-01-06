@@ -9,7 +9,7 @@ const Header = (props) => {
     )
 }
 
-Header.PropTypes = {
+Header.propTypes = {
     title: PropTypes.string.isRequired
 }
 

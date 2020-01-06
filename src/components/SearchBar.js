@@ -22,7 +22,7 @@ const SearchBar = (props) => {
     )
 }
 
-SearchBar.PropTypes = {
+SearchBar.propTypes = {
     query: PropTypes.string.isRequired,
     updateQuery: PropTypes.func.isRequired
 }
