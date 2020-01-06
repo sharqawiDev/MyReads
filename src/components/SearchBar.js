@@ -1,6 +1,7 @@
 import React from "react"
 import { Link } from "react-router-dom"
-export default (props) => {
+import PropTypes from 'prop-types';
+const SearchBar = (props) => {
     return (
         <div className="search-books-bar">
             <Link
@@ -20,3 +21,10 @@ export default (props) => {
         </div>
     )
 }
+
+SearchBar.PropTypes = {
+    query: PropTypes.string.isRequired,
+    updateQuery: PropTypes.func.isRequired
+}
+
+export default SearchBar;

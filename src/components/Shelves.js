@@ -1,7 +1,8 @@
 import React from "react"
 import BookShelf from "./BookShelf"
+import PropTypes from 'prop-types';
 
-export default (props) => {
+const Shelves = (props) => {
     const cr = props.books.filter(book => book.shelf === "currentlyReading")
     const wtr = props.books.filter(book => book.shelf === "wantToRead")
     const r = props.books.filter(book => book.shelf === "read")
@@ -15,3 +16,10 @@ export default (props) => {
         </div>
     )
 }
+
+Shelves.PropTypes = {
+    books: PropTypes.array.isRequired,
+    changeShelf: PropTypes.func.isRequired
+}
+
+export default Shelves;

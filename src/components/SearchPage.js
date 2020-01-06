@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import PropTypes from 'prop-types';
 import * as BooksAPI from "../BooksAPI"
 import SearchBar from "./SearchBar"
 import BooksGrid from "./BooksGrid"
@@ -6,6 +7,10 @@ export default class SearchPage extends Component {
     state = {
         books: [],
         query: ""
+    }
+    static PropTypes = {
+        changeShelf: PropTypes.func.isRequired,
+        books: PropTypes.array.isRequired
     }
 
     updateQuery = (query) => {
@@ -28,7 +33,7 @@ export default class SearchPage extends Component {
     render() {
         return (
             <div className="search-books">
-                <SearchBar goBack={this.props.goBack} query={this.state.query} updateQuery={this.updateQuery} />
+                <SearchBar query={this.state.query} updateQuery={this.updateQuery} />
                 <div className="search-books-results">
                     <BooksGrid books={this.state.books} changeShelf={this.props.changeShelf} />
                 </div>

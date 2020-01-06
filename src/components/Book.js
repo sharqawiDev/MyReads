@@ -1,7 +1,8 @@
 import React from "react"
+import PropTypes from 'prop-types';
 
-export default (props) => {
-    const { book } = props;
+const Book = (props) => {
+    const { book, changeShelf } = props;
     return (
         <div className="book">
             <div className="book-top">
@@ -9,7 +10,7 @@ export default (props) => {
                 <div className="book-shelf-changer">
                     <select defaultValue={book.shelf === undefined ? "none" : book.shelf} onChange={(e) => {
                         book.shelf = e.target.value
-                        props.changeShelf(book, e.target.value)
+                        changeShelf(book, e.target.value)
                     }}>
                         <option value="move" disabled>Move to...</option>
                         <option value="currentlyReading">Currently Reading</option>
@@ -25,3 +26,10 @@ export default (props) => {
         </div>
     )
 }
+
+Book.PropTypes = {
+    book: PropTypes.object.isRequired,
+    changeShelf: PropTypes.func.isRequired
+}
+
+export default Book;
