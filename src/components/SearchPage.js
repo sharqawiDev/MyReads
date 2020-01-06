@@ -15,7 +15,7 @@ export default class SearchPage extends Component {
 
     updateQuery = (query) => {
         this.setState(() => ({
-            query: query.trim()
+            query
         }), () => {
             BooksAPI.search(query).then(books => {
                 if (Array.isArray(books)) {
